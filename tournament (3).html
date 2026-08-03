@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - Pitch Kings</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">Pitch Kings DLS</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="tournament.html">Tournaments</a>
+      <a href="profile.html">Profile</a>
+      <button id="userLogoutBtn" class="btn-login" style="border:none; cursor:pointer;">Logout</button>
+    </nav>
+  </header>
+
+  <main class="dashboard-container">
+    <h2>Welcome to Your Dashboard</h2>
+    <div class="grid-cards">
+      <div class="card">
+        <h3>My Team</h3>
+        <p id="userTeamName">Loading...</p>
+      </div>
+      <div class="card">
+        <h3>Upcoming Matches</h3>
+        <p id="nextMatch">None scheduled</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { checkAuth, logoutUser } from './js/auth.js';
+    checkAuth();
+    document.getElementById('userLogoutBtn').addEventListener('click', logoutUser);
+  </script>
+</body>
+</html>

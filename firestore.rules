@@ -1,0 +1,52 @@
+// js/fixtures.js
+import { db } from './firebase.js';
+import { collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// Fetch and render all scheduled fixtures
+export async function loadFixtures(containerId = 'fixturesList') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '<p>Loading fixtures...</p>';
+
+  try {
+    const snapshot = await getDocs(collection(db, "fixtures"));
+    container.innerHTML = '';
+
+    if (snapshot.empty) {
+      container.innerHTML = '<p>No fixtures scheduled.</p>';
+      return;
+    }
+
+    snapshot.forEach((docSnap) => {
+      const match = docSnap.data();
+      const card = document.createElement('div');
+      card.className = 'card match-card';
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+          <span><strong>${match.homeTeam}</strong></span>
+          <span>${match.homeScore ?? '-'} : ${match.awayScore ?? '-'}</span>
+          <span><strong>${match.awayTeam}</strong></span>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error loading fixtures:", error);
+  }
+}
+
+// Update match result
+export async function updateMatchScore(fixtureId, homeScore, awayScore) {
+  try {
+    const matchRef = doc(db, "fixtures", fixtureId);
+    await updateDoc(matchRef, {
+      homeScore: Number(homeScore),
+      awayScore: Number(awayScore),
+      status: 'completed'
+    });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}

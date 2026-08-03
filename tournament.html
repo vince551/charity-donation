@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Pitch Kings</title>
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <aside class="sidebar">
+      <h3>Pitch Kings Admin</h3>
+      <nav>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="standings.html">Standings</a>
+        <a href="referees.html">Referees</a>
+        <a href="users.html">Users</a>
+        <a href="reports.html">Reports</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+      <button id="logoutBtn">Logout</button>
+    </aside>
+
+    <main class="content">
+      <header>
+        <h1>Dashboard Overview</h1>
+      </header>
+      
+      <section class="stats-grid">
+        <div class="card">
+          <h3>Total Tournaments</h3>
+          <p id="count-tournaments">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Teams</h3>
+          <p id="count-teams">0</p>
+        </div>
+        <div class="card">
+          <h3>Active Matches</h3>
+          <p id="count-matches">0</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { checkAuth, logoutUser } from '../js/auth.js';
+    
+    // Enforce Admin Auth
+    checkAuth('admin');
+
+    document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+  </script>
+</body>
+</html>

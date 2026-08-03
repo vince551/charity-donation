@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - Pitch Kings Admin</title>
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <aside class="sidebar">
+      <h3>Pitch Kings Admin</h3>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="standings.html">Standings</a>
+        <a href="referees.html">Referees</a>
+        <a href="users.html">Users</a>
+        <a href="reports.html" class="active">Reports</a>
+        <a href="settings.html">Settings</a>
+      </nav>
+      <button id="logoutBtn">Logout</button>
+    </aside>
+
+    <main class="content">
+      <header>
+        <h1>Tournament Reports & Export</h1>
+      </header>
+      <div class="card" style="margin-top: 20px;">
+        <h3>Generate Summary</h3>
+        <p style="margin-top: 10px; color: #666;">Export overall match logs, goal totals, and standings as CSV.</p>
+        <button class="btn-primary" style="margin-top: 15px;">Export CSV</button>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { checkAuth, logoutUser } from '../js/auth.js';
+    checkAuth('admin');
+    document.getElementById('logoutBtn').addEventListener('click', logoutUser);
+  </script>
+</body>
+</html>
