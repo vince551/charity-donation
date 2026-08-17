@@ -1,53 +1,72 @@
 # KVD — Kindred Vince Donations
 
-KVD is a portfolio-grade charity and donation platform for discovering verified causes, donating securely, volunteering, managing campaigns and measuring impact.
+KVD is a Kenya-focused charity and donation platform designed around **trust, transparent fundraising and measurable community impact**.
 
 ## Stack
 
 - React + Vite
-- Express.js REST API
-- PostgreSQL schema
+- React Router
+- Node.js + Express
+- PostgreSQL
+- JWT + bcryptjs
 - Zod validation
-- Helmet + CORS + Morgan
-- Recharts analytics
-- Lucide icons
-- Environment-based payment configuration
-
-## Product areas
-
-- Campaign discovery, search and filters
-- Donor, charity and volunteer workspaces
-- Admin/verification-ready architecture
-- Impact analytics
-- Donation receipt/data model
-- Notifications and audit logs
+- Helmet + CORS
+- Recharts
 - M-Pesa-ready payment abstraction
-- Responsive mobile-first UI
-- Dark mode
+- Cloudinary-ready media storage
 
-## M-Pesa safety
+## Product roles
 
-The repository deliberately contains no live payment credentials or personal payment details. Configure the M-Pesa recipient and Daraja credentials through deployment environment variables. The current UI supports manual payment mode; STK Push should only be enabled after server-side Daraja credentials and callback verification are configured.
+- **Donor** — discover causes, donate, track receipts and impact
+- **Charity** — manage organization verification, campaigns and volunteers
+- **Volunteer** — discover and apply for opportunities
+- **Administrator** — verify organizations, moderate campaigns and monitor platform activity
 
-## Run locally
+## Core API
 
-```bash
-npm install
-npm run dev
+```text
+GET  /api/health
+GET  /api/config/public
+GET  /api/campaigns
+GET  /api/campaigns/:id
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+POST /api/donations
+GET  /api/donations
 ```
 
-API:
+## Local development
 
-```bash
-npm run server
-```
+1. Install Node.js 20+.
+2. Copy `.env.example` to `.env`.
+3. Set `DATABASE_URL` and a strong `JWT_SECRET`.
+4. Apply `server/db/schema.sql` to PostgreSQL.
+5. Install dependencies with `npm install`.
+6. Run `npm run dev`.
 
-Copy `.env.example` to `.env` and fill in deployment-specific values. Never commit `.env`.
+The Vite client runs on port 5173 and the Express API on port 4000.
 
-## Database
+## M-Pesa
 
-`server/db/schema.sql` defines users, organizations, campaigns, donations, receipts, volunteer workflows, notifications and audit logs.
+KVD supports a manual M-Pesa workflow now and is structured for Safaricom Daraja STK Push integration. **Never commit Daraja credentials, M-Pesa PINs, or production secrets to GitHub.** Configure them through deployment environment variables.
 
-## Roadmap
+The donation API intentionally keeps payments in a `pending` state until server-side transaction verification succeeds. This prevents the frontend from falsely marking an unverified payment as successful.
 
-The architecture is prepared for authentication/RBAC, verified organizations, secure payment callbacks, receipts, volunteer approvals, notifications, analytics, audit logs, AI recommendations and PWA enhancements.
+## Production roadmap
+
+- Daraja STK Push + callback verification
+- Receipt PDF generation
+- Full donor/charity/volunteer/admin dashboards
+- Campaign updates and notifications
+- Organization document verification
+- Fraud monitoring and audit trails
+- Cloudinary image uploads
+- PWA installation and push notifications
+- AI campaign discovery and impact summaries
+
+## Brand
+
+**KVD — Kindred Vince Donations**
+
+> Give with purpose. See the impact.
