@@ -1,9 +1,100 @@
-CREATE TABLE IF NOT EXISTS users(id UUID PRIMARY KEY, full_name VARCHAR(120) NOT NULL, email VARCHAR(180) UNIQUE NOT NULL, password_hash TEXT NOT NULL, role VARCHAR(20) NOT NULL DEFAULT 'donor', verified BOOLEAN NOT NULL DEFAULT FALSE, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS organizations(id UUID PRIMARY KEY, owner_id UUID REFERENCES users(id), name VARCHAR(180) NOT NULL, description TEXT, verified BOOLEAN NOT NULL DEFAULT FALSE, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS campaigns(id UUID PRIMARY KEY, organization_id UUID REFERENCES organizations(id), title VARCHAR(220) NOT NULL, description TEXT NOT NULL, category VARCHAR(60) NOT NULL, location VARCHAR(120), goal_amount NUMERIC(14,2) NOT NULL, raised_amount NUMERIC(14,2) NOT NULL DEFAULT 0, status VARCHAR(30) NOT NULL DEFAULT 'pending', end_date DATE, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS donations(id UUID PRIMARY KEY, campaign_id UUID REFERENCES campaigns(id), donor_id UUID REFERENCES users(id), amount NUMERIC(14,2) NOT NULL, currency CHAR(3) NOT NULL DEFAULT 'KES', provider VARCHAR(40) NOT NULL DEFAULT 'mpesa', transaction_reference VARCHAR(120), status VARCHAR(30) NOT NULL DEFAULT 'pending', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS receipts(id UUID PRIMARY KEY, donation_id UUID UNIQUE REFERENCES donations(id), receipt_number VARCHAR(80) UNIQUE NOT NULL, issued_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS volunteer_opportunities(id UUID PRIMARY KEY, organization_id UUID REFERENCES organizations(id), title VARCHAR(180) NOT NULL, description TEXT, location VARCHAR(120), event_date TIMESTAMPTZ, capacity INTEGER NOT NULL DEFAULT 1);
-CREATE TABLE IF NOT EXISTS volunteer_applications(id UUID PRIMARY KEY, opportunity_id UUID REFERENCES volunteer_opportunities(id), volunteer_id UUID REFERENCES users(id), status VARCHAR(30) NOT NULL DEFAULT 'pending', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS notifications(id UUID PRIMARY KEY, user_id UUID REFERENCES users(id), title VARCHAR(180) NOT NULL, body TEXT NOT NULL, read BOOLEAN NOT NULL DEFAULT FALSE, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
-CREATE TABLE IF NOT EXISTS audit_logs(id UUID PRIMARY KEY, actor_id UUID REFERENCES users(id), action VARCHAR(120) NOT NULL, entity_type VARCHAR(80), entity_id UUID, metadata JSONB, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  full_name VARCHAR(120) NOT NULL,
+  email VARCHAR(180) UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'donor' CHECK (role IN ('donor','charity','volunteer','admin')),
+  verified BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS organizations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  owner_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  name VARCHAR(180) NOT NULL,
+  description TEXT,
+  verified BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  title VARCHAR(220) NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(60) NOT NULL,
+  location VARCHAR(120),
+  goal_amount NUMERIC(14,2) NOT NULL CHECK (goal_amount > 0),
+  raised_amount NUMERIC(14,2) NOT NULL DEFAULT 0 CHECK (raised_amount >= 0),
+  status VARCHAR(30) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','active','completed','rejected','paused')),
+  end_date DATE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS donations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  campaign_id UUID NOT NULL REFERENCES campaigns(id) ON DELETE RESTRICT,
+  donor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  donor_name VARCHAR(120),
+  donor_phone VARCHAR(20),
+  amount NUMERIC(14,2) NOT NULL CHECK (amount >= 10),
+  currency CHAR(3) NOT NULL DEFAULT 'KES',
+  provider VARCHAR(40) NOT NULL DEFAULT 'mpesa',
+  transaction_reference VARCHAR(120) UNIQUE,
+  status VARCHAR(30) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','confirmed','failed','refunded')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS receipts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  donation_id UUID UNIQUE NOT NULL REFERENCES donations(id) ON DELETE CASCADE,
+  receipt_number VARCHAR(80) UNIQUE NOT NULL,
+  issued_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS volunteer_opportunities (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  title VARCHAR(180) NOT NULL,
+  description TEXT,
+  location VARCHAR(120),
+  event_date TIMESTAMPTZ,
+  capacity INTEGER NOT NULL DEFAULT 1 CHECK (capacity > 0)
+);
+
+CREATE TABLE IF NOT EXISTS volunteer_applications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  opportunity_id UUID REFERENCES volunteer_opportunities(id) ON DELETE CASCADE,
+  volunteer_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  status VARCHAR(30) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected','withdrawn')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(opportunity_id, volunteer_id)
+);
+
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(180) NOT NULL,
+  body TEXT NOT NULL,
+  read BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  actor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  action VARCHAR(120) NOT NULL,
+  entity_type VARCHAR(80),
+  entity_id UUID,
+  metadata JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS campaigns_status_idx ON campaigns(status);
+CREATE INDEX IF NOT EXISTS campaigns_category_idx ON campaigns(category);
+CREATE INDEX IF NOT EXISTS donations_campaign_idx ON donations(campaign_id);
+CREATE INDEX IF NOT EXISTS donations_status_idx ON donations(status);
+CREATE INDEX IF NOT EXISTS notifications_user_idx ON notifications(user_id, read);
+CREATE INDEX IF NOT EXISTS audit_logs_entity_idx ON audit_logs(entity_type, entity_id);
