@@ -10,11 +10,11 @@ import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import './styles.css';
 import './polish.css';
 import './theme.css';
-
 function ThemeManager(){
  const [theme,setTheme]=useState(()=>{const saved=localStorage.getItem('kvd-theme');if(saved==='dark'||saved==='light')return saved;return window.matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light'});
  useEffect(()=>{document.documentElement.classList.toggle('dark',theme==='dark');document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme;localStorage.setItem('kvd-theme',theme)},[theme]);
  useEffect(()=>{const onTheme=e=>setTheme(e.detail==='dark'?'dark':'light');window.addEventListener('kvd-theme-change',onTheme);return()=>window.removeEventListener('kvd-theme-change',onTheme)},[]);
+ useEffect(()=>{const onClick=e=>{const button=e.target.closest('.volunteer .primary');if(button){e.preventDefault();window.location.href='/register'}};document.addEventListener('click',onClick);return()=>document.removeEventListener('click',onClick)},[]);
  return null;
 }
 function App(){return <AuthProvider><ThemeManager/><BrowserRouter><Routes><Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/></Routes></BrowserRouter></AuthProvider>}
