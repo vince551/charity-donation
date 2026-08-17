@@ -1,6 +1,6 @@
 import React,{useMemo,useState} from 'react';
 import {createRoot} from 'react-dom/client';
-import {Heart,Search,Sun,Moon,ShieldCheck,ArrowRight,Menu,X,Users,TrendingUp,HandHeart,MapPin,Clock,Receipt,LayoutDashboard} from 'lucide-react';
+import {Heart,Search,Sun,Moon,ShieldCheck,ArrowRight,Menu,X,Users,TrendingUp,HandHeart,MapPin,Receipt,LayoutDashboard} from 'lucide-react';
 import {BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer} from 'recharts';
 import './styles.css';
 
