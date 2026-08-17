@@ -1,34 +1,30 @@
-<div align="center">
+# ⚽ Pitch King — DLS Football Project
 
-# ⚽ PITCH KING
-### **DLS Football Project**
+> **Experimental football-tech project in Vince's DLS portfolio.**
 
-![Status](https://img.shields.io/badge/STATUS-DEVELOPMENT-00FF88?style=for-the-badge)
-![Theme](https://img.shields.io/badge/FOCUS-DLS-111111?style=for-the-badge)
+![Status](https://img.shields.io/badge/STATUS-EXPERIMENTAL-fbbf24?style=for-the-badge&labelColor=0b1020)
+![Focus](https://img.shields.io/badge/FOCUS-DLS-111827?style=for-the-badge)
 
-**A Dream League Soccer project in Vince's football-tech portfolio.**
+## Purpose
 
-</div>
+Pitch King is an experimental DLS project for exploring football interfaces, league concepts and match-day workflows.
 
----
+The more complete tournament-management implementation is maintained separately in **[Pitch Kings](https://github.com/vince551/Pitch-kings)**. Keeping this repository clearly labelled as experimental prevents visitors from confusing the two projects.
 
-## ✦ Purpose
+## Direction
 
-Pitch King is part of Vince's collection of football and DLS-focused projects. The repository can evolve as league, player and match-management ideas are developed.
+- Competitive football experiences
+- League and tournament workflows
+- Player-focused interfaces
+- Match-day organization
+- UI experimentation
 
-## 🚀 Clone
+## Run locally
 
 ```bash
 git clone https://github.com/vince551/Pitch-king.git
 cd Pitch-king
 ```
-
-## 🧭 Direction
-
-- Competitive football experiences
-- League and tournament workflows
-- Player-focused interfaces
-- Better match-day organization
 
 ## 👨‍💻 Builder
 
