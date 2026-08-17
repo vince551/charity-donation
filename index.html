@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A modern charity and donation platform connecting people with causes that matter." />
+  <title>Kindred — Give with purpose</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">♥</span> kindred</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#campaigns">Campaigns</a><a href="#how-it-works">How it works</a><a href="#impact">Our impact</a>
+    </nav>
+    <div class="header-actions"><button class="icon-btn" id="themeToggle" aria-label="Toggle theme">☼</button><a class="login" href="login.html">Sign in</a><a class="btn btn-dark" href="#campaigns">Give now</a></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">MAKE A DIFFERENCE, TOGETHER</span>
+        <h1>Small acts.<br><em>Lasting impact.</em></h1>
+        <p>Discover verified causes, support communities, and see exactly how your generosity creates change.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#campaigns">Explore campaigns <span>→</span></a><a class="text-link" href="#how-it-works">See how it works ↓</a></div>
+      </div>
+      <div class="hero-art"><div class="art-card"><span>YOUR IMPACT</span><strong>1,248</strong><small>people supported this month</small><div class="avatars"><i>J</i><i>A</i><i>M</i><i>+</i></div></div><div class="sun"></div></div>
+    </section>
+
+    <section class="stats" id="impact"><div><strong>KES 18.4M</strong><span>raised through Kindred</span></div><div><strong>12,640</strong><span>donors making a difference</span></div><div><strong>186</strong><span>verified campaigns</span></div><div><strong>94%</strong><span>funds reach their cause</span></div></section>
+
+    <section class="section" id="campaigns">
+      <div class="section-head"><div><span class="eyebrow">CAUSES WORTH CARING ABOUT</span><h2>Find a campaign close to your heart.</h2></div><a class="text-link" href="#campaigns">View all campaigns →</a></div>
+      <div class="filters"><button class="filter active" data-filter="all">All causes</button><button class="filter" data-filter="Education">Education</button><button class="filter" data-filter="Healthcare">Healthcare</button><button class="filter" data-filter="Food">Food</button><button class="filter" data-filter="Environment">Environment</button></div>
+      <div class="campaign-grid" id="campaignGrid"></div>
+    </section>
+
+    <section class="how section" id="how-it-works"><div class="section-head centered"><div><span class="eyebrow">SIMPLE BY DESIGN</span><h2>Give in three meaningful steps.</h2></div></div><div class="steps"><article><b>01</b><span>⌕</span><h3>Find your cause</h3><p>Explore campaigns from organizations and community leaders we've verified.</p></article><article><b>02</b><span>♡</span><h3>Make a difference</h3><p>Give securely, once or monthly. Every contribution counts.</p></article><article><b>03</b><span>↗</span><h3>See the impact</h3><p>Get updates and transparent reports showing where your support goes.</p></article></div></section>
+
+    <section class="cta"><div><span class="eyebrow">FOR ORGANIZATIONS</span><h2>Your cause deserves to be heard.</h2><p>Create a verified campaign and connect with people ready to help.</p></div><a class="btn btn-light" href="login.html">Start a campaign →</a></section>
+  </main>
+  <footer><a class="brand" href="index.html"><span class="brand-mark">♥</span> kindred</a><span>© 2026 Kindred. Built for good.</span><div><a href="#">Privacy</a><a href="#">Terms</a></div></footer>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
