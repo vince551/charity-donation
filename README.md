@@ -1,35 +1,37 @@
-# ⚽ Pitch King — DLS Football Project
+# Kindred — Charity & Donation Platform
 
-> **Experimental football-tech project in Vince's DLS portfolio.**
+A polished, responsive charity platform concept designed around discovery, trust and measurable impact.
 
-![Status](https://img.shields.io/badge/STATUS-EXPERIMENTAL-fbbf24?style=for-the-badge&labelColor=0b1020)
-![Focus](https://img.shields.io/badge/FOCUS-DLS-111827?style=for-the-badge)
+## Current experience
 
-## Purpose
+- Modern charity landing page
+- Campaign discovery cards
+- Cause filters
+- Verified campaign indicators
+- KES fundraising progress
+- Impact statistics
+- Three-step giving flow
+- Organization CTA
+- Light/dark theme persistence
+- Responsive mobile layout
 
-Pitch King is an experimental DLS project for exploring football interfaces, league concepts and match-day workflows.
+## Next engineering phases
 
-The more complete tournament-management implementation is maintained separately in **[Pitch Kings](https://github.com/vince551/Pitch-kings)**. Keeping this repository clearly labelled as experimental prevents visitors from confusing the two projects.
+1. React frontend migration
+2. Node.js + Express API
+3. PostgreSQL data model
+4. JWT authentication and role-based access control
+5. Charity verification workflow
+6. Secure payment integration
+7. Donation receipts
+8. Donor, charity, volunteer and admin dashboards
+9. Notifications and campaign updates
+10. Analytics and production deployment
 
-## Direction
+## Run
 
-- Competitive football experiences
-- League and tournament workflows
-- Player-focused interfaces
-- Match-day organization
-- UI experimentation
+Open `index.html` in a browser or serve the repository with any static web server.
 
-## Run locally
+## Project goal
 
-```bash
-git clone https://github.com/vince551/Pitch-king.git
-cd Pitch-king
-```
-
-## 👨‍💻 Builder
-
-**Vince Odhiambo** — web developer and football-tech builder.
-
----
-
-<p align="center"><sub>Built around the game. Designed for competition.</sub></p>
+Kindred is being developed as a portfolio-grade full-stack application demonstrating real-world campaign management, donations, verification, volunteer workflows, analytics and transparent impact reporting.
