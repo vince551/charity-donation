@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import {AuthProvider} from './auth/AuthContext';
@@ -10,8 +10,26 @@ import ProtectedRoute from './auth/ProtectedRoute.jsx';
 import './styles.css';
 import './polish.css';
 
-function App(){
-  return <AuthProvider><BrowserRouter><Routes><Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/></Routes></BrowserRouter></AuthProvider>;
+function ThemeManager(){
+  const [theme,setTheme]=useState(()=>{
+    const saved=localStorage.getItem('kvd-theme');
+    if(saved==='dark'||saved==='light') return saved;
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches?'dark':'light';
+  });
+  useEffect(()=>{
+    document.documentElement.classList.toggle('dark',theme==='dark');
+    document.documentElement.dataset.theme=theme;
+    document.documentElement.style.colorScheme=theme;
+    localStorage.setItem('kvd-theme',theme);
+  },[theme]);
+  useEffect(()=>{
+    const onTheme=e=>setTheme(e.detail==='dark'?'dark':'light');
+    window.addEventListener('kvd-theme-change',onTheme);
+    return()=>window.removeEventListener('kvd-theme-change',onTheme);
+  },[]);
+  return null;
 }
+
+function App(){return <AuthProvider><ThemeManager/><BrowserRouter><Routes><Route path="/" element={<Home/>}/><Route path="/login" element={<Login/>}/><Route path="/register" element={<Register/>}/><Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/></Routes></BrowserRouter></AuthProvider>}
 
 createRoot(document.getElementById('root')).render(<App/>);
