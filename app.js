@@ -1,129 +1,22 @@
-/* css/style.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+const campaigns = [
+  {category:'Education',title:'Keep a child in school',desc:'Help students access books, uniforms and learning materials.',raised:182500,goal:300000,backers:84,image:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80'},
+  {category:'Healthcare',title:'A clinic for the community',desc:'Bring essential healthcare and maternal support closer to families.',raised:412000,goal:500000,backers:156,image:'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80'},
+  {category:'Food',title:'Meals for 500 families',desc:'A community-led food drive providing nutritious meals this month.',raised:97500,goal:150000,backers:62,image:'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=80'},
+  {category:'Environment',title:'Restore our local forest',desc:'Plant native trees and protect a vital green space for future generations.',raised:64000,goal:120000,backers:41,image:'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=80'},
+  {category:'Education',title:'Digital skills for teens',desc:'Equip young people with practical technology and career skills.',raised:210000,goal:250000,backers:97,image:'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80'},
+  {category:'Healthcare',title:'Mental wellness outreach',desc:'Fund safe spaces and counselling sessions for young people.',raised:138000,goal:200000,backers:73,image:'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=900&q=80'}
+];
 
-body {
-  background-color: #0f172a;
-  color: #f8fafc;
-  min-height: 100vh;
+const grid=document.getElementById('campaignGrid');
+const toast=document.getElementById('toast');
+function money(n){return new Intl.NumberFormat('en-KE',{style:'currency',currency:'KES',maximumFractionDigits:0}).format(n)}
+function render(filter='all'){
+  if(!grid)return;
+  const list=filter==='all'?campaigns:campaigns.filter(c=>c.category===filter);
+  grid.innerHTML=list.map((c,i)=>{const pct=Math.min(100,Math.round(c.raised/c.goal*100));return `<article class="campaign"><div class="campaign-img" style="background-image:linear-gradient(0deg,rgba(0,0,0,.55),transparent 70%),url('${c.image}')"><span>${c.category}</span></div><div class="campaign-body"><span class="tag">Verified campaign</span><h3>${c.title}</h3><p>${c.desc}</p><div class="progress"><i style="width:${pct}%"></i></div><div class="campaign-meta"><strong>${money(c.raised)} raised</strong><span>${pct}% · ${c.backers} supporters</span></div></div></article>`}).join('');
 }
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 3rem;
-  background-color: #1e293b;
-  border-bottom: 1px solid #334155;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #10b981;
-}
-
-.navbar nav {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.navbar a {
-  color: #94a3b8;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.navbar a:hover {
-  color: #f8fafc;
-}
-
-.btn-login {
-  background-color: #10b981;
-  color: #ffffff !important;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-}
-
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 6rem 1.5rem;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  color: #94a3b8;
-  max-width: 600px;
-  margin-bottom: 2rem;
-  font-size: 1.125rem;
-}
-
-.cta-btn {
-  background-color: #10b981;
-  color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-/* Login Modal/Form */
-.login-container {
-  max-width: 400px;
-  margin: 5rem auto;
-  padding: 2rem;
-  background: #1e293b;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #94a3b8;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 0.375rem;
-  color: #fff;
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #10b981;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.error {
-  color: #ef4444;
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-}
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render(btn.dataset.filter)}));
+const savedTheme=localStorage.getItem('kindred-theme');if(savedTheme==='dark')document.documentElement.dataset.theme='dark';
+document.getElementById('themeToggle')?.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';if(dark)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';localStorage.setItem('kindred-theme',dark?'light':'dark');});
+document.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();toast.textContent='This section is coming next.';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)}));
+render();
