@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Link,useLocation,useNavigate} from 'react-router-dom';
 import {ArrowRight,Eye,EyeOff,Heart,ShieldCheck,Sparkles} from 'lucide-react';
 import {useAuth} from '../auth/AuthContext';
+import '../login.css';
 
 export default function Login(){
   const {login}=useAuth();
