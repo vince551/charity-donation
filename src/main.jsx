@@ -1,10 +1,13 @@
 import {useEffect,useMemo,useState} from 'react';
 import {Heart,ArrowRight,Search,ShieldCheck,Sun,Moon,MapPin,Users,TrendingUp,HandHeart,X,Menu,ChevronRight} from 'lucide-react';
+import educate from '../educate.jpg';
+import feed from '../feed.jpg';
+import environment from '../environment.jpg';
 const campaigns=[
-{id:1,cat:'Education',title:'Keep a child in school',location:'Nairobi',raised:182500,goal:300000,donors:84,days:18,image:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=80',desc:'Books, uniforms and learning materials for students who need a stronger start.'},
+{id:1,cat:'Education',title:'Keep a child in school',location:'Nairobi',raised:182500,goal:300000,donors:84,days:18,image:educate,desc:'Books, uniforms and learning materials for students who need a stronger start.'},
 {id:2,cat:'Healthcare',title:'A clinic for the community',location:'Kisumu',raised:412000,goal:500000,donors:156,days:11,image:'https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1000&q=80',desc:'Essential healthcare and maternal support closer to families.'},
-{id:3,cat:'Food',title:'Meals for 500 families',location:'Nairobi',raised:97500,goal:150000,donors:62,days:8,image:'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1000&q=80',desc:'A community-led food drive providing nutritious meals this month.'},
-{id:4,cat:'Environment',title:'Restore our local forest',location:'Kiambu',raised:64000,goal:120000,donors:41,days:26,image:'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=80',desc:'Plant native trees and protect a vital green space for future generations.'},
+{id:3,cat:'Food',title:'Meals for 500 families',location:'Nairobi',raised:97500,goal:150000,donors:62,days:8,image:feed,desc:'A community-led food drive providing nutritious meals this month.'},
+{id:4,cat:'Environment',title:'Restore our local forest',location:'Kiambu',raised:64000,goal:120000,donors:41,days:26,image:environment,desc:'Plant native trees and protect a vital green space for future generations.'},
 {id:5,cat:'Education',title:'Digital skills for teens',location:'Mombasa',raised:210000,goal:250000,donors:97,days:14,image:'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=80',desc:'Practical technology and career skills for young people.'},
 {id:6,cat:'Healthcare',title:'Mental wellness outreach',location:'Nairobi',raised:138000,goal:200000,donors:73,days:21,image:'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=80',desc:'Safe spaces and counselling sessions for young people.'}
 ];
