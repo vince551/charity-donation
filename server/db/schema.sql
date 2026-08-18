@@ -39,12 +39,19 @@ CREATE TABLE IF NOT EXISTS donations (
   donor_id UUID REFERENCES users(id) ON DELETE SET NULL,
   donor_name VARCHAR(120),
   donor_phone VARCHAR(20),
+  donor_email VARCHAR(180),
   amount NUMERIC(14,2) NOT NULL CHECK (amount >= 10),
   currency CHAR(3) NOT NULL DEFAULT 'KES',
   provider VARCHAR(40) NOT NULL DEFAULT 'mpesa',
-  transaction_reference VARCHAR(120) UNIQUE,
+  merchant_request_id VARCHAR(120),
+  checkout_request_id VARCHAR(120),
+  transaction_reference VARCHAR(120),
+  mpesa_receipt_number VARCHAR(120),
   status VARCHAR(30) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','confirmed','failed','refunded')),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  result_code INTEGER,
+  result_description TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  confirmed_at TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS receipts (
@@ -96,5 +103,16 @@ CREATE INDEX IF NOT EXISTS campaigns_status_idx ON campaigns(status);
 CREATE INDEX IF NOT EXISTS campaigns_category_idx ON campaigns(category);
 CREATE INDEX IF NOT EXISTS donations_campaign_idx ON donations(campaign_id);
 CREATE INDEX IF NOT EXISTS donations_status_idx ON donations(status);
+CREATE INDEX IF NOT EXISTS donations_checkout_idx ON donations(checkout_request_id);
 CREATE INDEX IF NOT EXISTS notifications_user_idx ON notifications(user_id, read);
 CREATE INDEX IF NOT EXISTS audit_logs_entity_idx ON audit_logs(entity_type, entity_id);
+
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS donor_email VARCHAR(180);
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS merchant_request_id VARCHAR(120);
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS checkout_request_id VARCHAR(120);
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS mpesa_receipt_number VARCHAR(120);
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS result_code INTEGER;
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS result_description TEXT;
+ALTER TABLE donations ADD COLUMN IF NOT EXISTS confirmed_at TIMESTAMPTZ;
+CREATE UNIQUE INDEX IF NOT EXISTS donations_checkout_request_uidx ON donations(checkout_request_id) WHERE checkout_request_id IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS donations_transaction_reference_uidx ON donations(transaction_reference) WHERE transaction_reference IS NOT NULL;
