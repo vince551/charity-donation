@@ -1,5 +1,5 @@
-const CACHE = 'kvd-shell-v1';
-const BASE = '/charity-donation/';
+const CACHE = 'kvd-shell-v2';
+const BASE = new URL('./', self.registration.scope).pathname;
 const APP_SHELL = [BASE, BASE + 'index.html', BASE + 'manifest.webmanifest'];
 
 self.addEventListener('install', event => {
